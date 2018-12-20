@@ -13,3 +13,23 @@ before_install:
 script: 
   # -- --coverage will auto exit "npm run test"
   - docker run lchewy/docker-react npm run test -- --coverage
+
+deploy:
+  # travis ci is preconfigure to deploy to a handful of hosting providers; ex AWS
+  provider: elasticbeanstalk
+  region: "us-east-1"
+  # what i named ebs app
+  app: "docker-react"
+  env: "DockerReact-env"
+  bucket_name: "elasticbeanstalk-us-east-1-160061621485"
+  # use app name as path
+  bucket_path: "docker-react"
+  # only trigger when deployed on master branch
+  on:
+    branch: master
+  # create IAM role for travis to get full access to elasticbeanstalk
+  # set generated keys to environment variables on travis console
+  # set env variable name below $
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: "$AWS_SECRET_KEY"
