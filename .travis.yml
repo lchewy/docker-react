@@ -1,0 +1,15 @@
+#everytime we make use of docker we have to have super user permissions
+sudo: required 
+# tells travis what we need pre installed
+services:   
+# hey travis we need a copy of docker ready to go
+- docker  
+
+before_install:
+  # -t is a tag to remember the docker container created
+  - docker build -t lchewy/docker-react -f Dockerfile.dev . 
+
+# contains all the different commands to be executed to run test suite
+script: 
+  # -- --coverage will auto exit "npm run test"
+  - docker run lchewy/docker-react npm run test -- --coverage
